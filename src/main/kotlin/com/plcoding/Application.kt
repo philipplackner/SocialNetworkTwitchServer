@@ -1,7 +1,9 @@
 package com.plcoding
 
-import io.ktor.application.*
+import com.plcoding.di.mainModule
 import com.plcoding.plugins.*
+import io.ktor.application.*
+import org.koin.ktor.ext.Koin
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
@@ -13,4 +15,7 @@ fun Application.module() {
     configureHTTP()
     configureMonitoring()
     configureSerialization()
+    install(Koin) {
+        modules(mainModule)
+    }
 }
