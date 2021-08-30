@@ -1,7 +1,7 @@
 package com.plcoding.di
 
-import com.plcoding.repository.user.UserRepository
-import com.plcoding.repository.user.UserRepositoryImpl
+import com.plcoding.data.repository.user.UserRepository
+import com.plcoding.data.repository.user.UserRepositoryImpl
 import com.plcoding.util.Constants
 import org.koin.dsl.module
 import org.litote.kmongo.coroutine.coroutine

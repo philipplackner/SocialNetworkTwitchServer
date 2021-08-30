@@ -7,7 +7,7 @@ import com.plcoding.data.requests.CreateAccountRequest
 import com.plcoding.data.responses.BasicApiResponse
 import com.plcoding.di.testModule
 import com.plcoding.plugins.configureSerialization
-import com.plcoding.repository.user.FakeUserRepository
+import com.plcoding.data.repository.user.FakeUserRepository
 import com.plcoding.util.ApiResponseMessages
 import io.ktor.application.*
 import io.ktor.http.*
@@ -15,8 +15,10 @@ import io.ktor.routing.*
 import io.ktor.server.testing.*
 import kotlinx.coroutines.runBlocking
 import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
+import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -32,6 +34,11 @@ internal class CreateUserRouteTest : KoinTest {
         startKoin {
             modules(testModule)
         }
+    }
+
+    @AfterTest
+    fun tearDown() {
+        stopKoin()
     }
 
     @Test
