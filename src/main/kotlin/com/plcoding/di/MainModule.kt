@@ -1,5 +1,7 @@
 package com.plcoding.di
 
+import com.plcoding.data.repository.follow.FollowRepository
+import com.plcoding.data.repository.follow.FollowRepositoryImpl
 import com.plcoding.data.repository.user.UserRepository
 import com.plcoding.data.repository.user.UserRepositoryImpl
 import com.plcoding.util.Constants
@@ -14,5 +16,8 @@ val mainModule = module {
     }
     single<UserRepository> {
         UserRepositoryImpl(get())
+    }
+    single<FollowRepository> {
+        FollowRepositoryImpl(get())
     }
 }
