@@ -1,16 +1,14 @@
 package com.plcoding.plugins
 
-import com.plcoding.routes.userRoutes
+import com.plcoding.repository.user.UserRepository
+import com.plcoding.routes.createUserRoute
 import io.ktor.routing.*
-import io.ktor.http.*
-import io.ktor.content.*
-import io.ktor.http.content.*
 import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
+import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
+    val userRepository: UserRepository by inject()
     routing {
-        userRoutes()
+        createUserRoute(userRepository)
     }
 }

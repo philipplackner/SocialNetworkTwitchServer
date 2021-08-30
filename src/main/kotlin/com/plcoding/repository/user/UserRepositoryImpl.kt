@@ -1,12 +1,12 @@
-package com.plcoding.controller.user
+package com.plcoding.repository.user
 
 import com.plcoding.data.models.User
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 
-class UserControllerImpl(
+class UserRepositoryImpl(
     db: CoroutineDatabase
-) : UserController {
+) : UserRepository {
 
     private val users = db.getCollection<User>()
 

@@ -15,6 +15,12 @@ application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -28,8 +34,7 @@ dependencies {
     implementation("io.ktor:ktor-websockets:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
-    testImplementation("io.ktor:ktor-server-tests:$ktor_version")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
+
 
     // KMongo
     implementation("org.litote.kmongo:kmongo:$kmongo_version")
@@ -37,8 +42,20 @@ dependencies {
 
     // Koin core features
     implementation("io.insert-koin:koin-core:$koin_version")
-    testImplementation("io.insert-koin:koin-test:$koin_version")
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
+
+    // Test dependencies
+
+    // Gson
+    testImplementation("com.google.code.gson:gson:2.8.8")
+    // Koin
+    testImplementation("io.insert-koin:koin-test:$koin_version")
+    // Ktor Test
+    testImplementation("io.ktor:ktor-server-tests:$ktor_version")
+    // Kotlin Test
+    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
+    // Truth
+    testImplementation("com.google.truth:truth:1.1.3")
 
 }

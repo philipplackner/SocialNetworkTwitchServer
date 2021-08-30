@@ -1,7 +1,7 @@
 package com.plcoding.di
 
-import com.plcoding.controller.user.UserController
-import com.plcoding.controller.user.UserControllerImpl
+import com.plcoding.repository.user.UserRepository
+import com.plcoding.repository.user.UserRepositoryImpl
 import com.plcoding.util.Constants
 import org.koin.dsl.module
 import org.litote.kmongo.coroutine.coroutine
@@ -12,7 +12,7 @@ val mainModule = module {
         val client = KMongo.createClient().coroutine
         client.getDatabase(Constants.DATABASE_NAME)
     }
-    single<UserController> {
-        UserControllerImpl(get())
+    single<UserRepository> {
+        UserRepositoryImpl(get())
     }
 }

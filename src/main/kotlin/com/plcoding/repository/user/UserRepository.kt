@@ -1,8 +1,8 @@
-package com.plcoding.controller.user
+package com.plcoding.repository.user
 
 import com.plcoding.data.models.User
 
-interface UserController {
+interface UserRepository {
 
     suspend fun createUser(user: User)
 
