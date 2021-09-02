@@ -1,10 +1,10 @@
 package com.plcoding.routes
 
-import com.plcoding.data.models.User
 import com.plcoding.data.repository.user.UserRepository
 import com.plcoding.data.requests.CreateAccountRequest
 import com.plcoding.data.requests.LoginRequest
 import com.plcoding.data.responses.BasicApiResponse
+import com.plcoding.service.UserService
 import com.plcoding.util.ApiResponseMessages.FIELDS_BLANK
 import com.plcoding.util.ApiResponseMessages.INVALID_CREDENTIALS
 import com.plcoding.util.ApiResponseMessages.USER_ALREADY_EXISTS
@@ -14,14 +14,13 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-fun Route.createUserRoute(userRepository: UserRepository) {
+fun Route.createUserRoute(userService: UserService) {
     post("/api/user/create") {
         val request = call.receiveOrNull<CreateAccountRequest>() ?: kotlin.run {
             call.respond(HttpStatusCode.BadRequest)
             return@post
         }
-        val userExists = userRepository.getUserByEmail(request.email) != null
-        if (userExists) {
+        if (userService.doesUserWithEmailExist(request.email)) {
             call.respond(
                 BasicApiResponse(
                     successful = false,
@@ -30,30 +29,22 @@ fun Route.createUserRoute(userRepository: UserRepository) {
             )
             return@post
         }
-        if (request.email.isBlank() || request.password.isBlank() || request.username.isBlank()) {
-            call.respond(
-                BasicApiResponse(
-                    successful = false,
-                    message = FIELDS_BLANK
+        when(userService.validateCreateAccountRequest(request)) {
+            is UserService.ValidationEvent.ErrorFieldEmpty -> {
+                call.respond(
+                    BasicApiResponse(
+                        successful = false,
+                        message = FIELDS_BLANK
+                    )
                 )
-            )
-            return@post
+            }
+            is UserService.ValidationEvent.Success -> {
+                userService.createUser(request)
+                call.respond(
+                    BasicApiResponse(successful = true)
+                )
+            }
         }
-        userRepository.createUser(
-            User(
-                email = request.email,
-                username = request.username,
-                password = request.password,
-                profileImageUrl = "",
-                bio = "",
-                gitHubUrl = null,
-                instagramUrl = null,
-                linkedInUrl = null
-            )
-        )
-        call.respond(
-            BasicApiResponse(successful = true)
-        )
     }
 }
 

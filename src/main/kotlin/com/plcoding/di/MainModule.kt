@@ -4,6 +4,7 @@ import com.plcoding.data.repository.follow.FollowRepository
 import com.plcoding.data.repository.follow.FollowRepositoryImpl
 import com.plcoding.data.repository.user.UserRepository
 import com.plcoding.data.repository.user.UserRepositoryImpl
+import com.plcoding.service.UserService
 import com.plcoding.util.Constants
 import org.koin.dsl.module
 import org.litote.kmongo.coroutine.coroutine
@@ -20,4 +21,5 @@ val mainModule = module {
     single<FollowRepository> {
         FollowRepositoryImpl(get())
     }
+    single { UserService(get()) }
 }
