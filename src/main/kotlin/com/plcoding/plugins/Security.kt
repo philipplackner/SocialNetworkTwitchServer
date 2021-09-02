@@ -32,3 +32,6 @@ fun Application.configureSecurity() {
         }
 
 }
+
+val JWTPrincipal.email: String?
+    get() = getClaim("email", String::class)

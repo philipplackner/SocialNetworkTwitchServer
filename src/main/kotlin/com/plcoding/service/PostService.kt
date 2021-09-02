@@ -3,6 +3,7 @@ package com.plcoding.service
 import com.plcoding.data.models.Post
 import com.plcoding.data.repository.post.PostRepository
 import com.plcoding.data.requests.CreatePostRequest
+import com.plcoding.util.Constants
 
 class PostService(
     private val repository: PostRepository
@@ -17,5 +18,13 @@ class PostService(
                 description = request.description
             )
         )
+    }
+
+    suspend fun getPostsForFollows(
+        userId: String,
+        page: Int = 0,
+        pageSize: Int = Constants.DEFAULT_POST_PAGE_SIZE
+    ): List<Post> {
+        return repository.getPostsByFollows(userId, page, pageSize)
     }
 }
