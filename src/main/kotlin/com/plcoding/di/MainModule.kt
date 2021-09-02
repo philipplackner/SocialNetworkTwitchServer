@@ -1,5 +1,7 @@
 package com.plcoding.di
 
+import com.plcoding.data.repository.comment.CommentRepository
+import com.plcoding.data.repository.comment.CommentRepositoryImpl
 import com.plcoding.data.repository.follow.FollowRepository
 import com.plcoding.data.repository.follow.FollowRepositoryImpl
 import com.plcoding.data.repository.likes.LikeRepository
@@ -8,10 +10,7 @@ import com.plcoding.data.repository.post.PostRepository
 import com.plcoding.data.repository.post.PostRepositoryImpl
 import com.plcoding.data.repository.user.UserRepository
 import com.plcoding.data.repository.user.UserRepositoryImpl
-import com.plcoding.service.FollowService
-import com.plcoding.service.LikeService
-import com.plcoding.service.PostService
-import com.plcoding.service.UserService
+import com.plcoding.service.*
 import com.plcoding.util.Constants
 import org.koin.dsl.module
 import org.litote.kmongo.coroutine.coroutine
@@ -34,8 +33,12 @@ val mainModule = module {
     single<LikeRepository> {
         LikeRepositoryImpl(get())
     }
+    single<CommentRepository> {
+        CommentRepositoryImpl(get())
+    }
     single { UserService(get()) }
     single { FollowService(get()) }
     single { PostService(get()) }
     single { LikeService(get()) }
+    single { CommentService(get()) }
 }

@@ -1,10 +1,8 @@
 package com.plcoding.routes
 
-import com.auth0.jwt.JWT
 import com.plcoding.data.requests.CreatePostRequest
 import com.plcoding.data.requests.DeletePostRequest
 import com.plcoding.data.responses.BasicApiResponse
-import com.plcoding.plugins.email
 import com.plcoding.service.LikeService
 import com.plcoding.service.PostService
 import com.plcoding.service.UserService
@@ -13,7 +11,6 @@ import com.plcoding.util.Constants
 import com.plcoding.util.QueryParams
 import io.ktor.application.*
 import io.ktor.auth.*
-import io.ktor.auth.jwt.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -60,7 +57,7 @@ fun Route.getPostsForFollows(
     userService: UserService
 ) {
     authenticate {
-        get {
+        get("/api/post/get") {
             val userId = call.parameters[QueryParams.PARAM_USER_ID] ?: kotlin.run {
                 call.respond(HttpStatusCode.BadRequest)
                 return@get
