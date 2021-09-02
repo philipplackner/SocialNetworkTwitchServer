@@ -1,10 +1,8 @@
 package com.plcoding.plugins
 
-import com.plcoding.data.repository.follow.FollowRepository
-import com.plcoding.data.repository.post.PostRepository
-import com.plcoding.data.repository.user.UserRepository
 import com.plcoding.routes.*
 import com.plcoding.service.FollowService
+import com.plcoding.service.LikeService
 import com.plcoding.service.PostService
 import com.plcoding.service.UserService
 import io.ktor.routing.*
@@ -18,12 +16,14 @@ fun Application.configureRouting() {
 
     val postService: PostService by inject()
 
+    val likeService: LikeService by inject()
+
     val jwtIssuer = environment.config.property("jwt.domain").getString()
     val jwtAudience = environment.config.property("jwt.audience").getString()
     val jwtSecret = environment.config.property("jwt.secret").getString()
     routing {
         // User routes
-        createUserRoute(userService)
+        createUser(userService)
         loginUser(
             userService = userService,
             jwtIssuer = jwtIssuer,
@@ -36,7 +36,12 @@ fun Application.configureRouting() {
         unfollowUser(followService)
 
         // Post routes
-        createPostRoute(postService, userService)
+        createPost(postService, userService)
         getPostsForFollows(postService, userService)
+        deletePost(postService, userService)
+
+        // Like routes
+        likeParent(likeService, userService)
+        unlikeParent(likeService, userService)
     }
 }

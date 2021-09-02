@@ -2,11 +2,14 @@ package com.plcoding.di
 
 import com.plcoding.data.repository.follow.FollowRepository
 import com.plcoding.data.repository.follow.FollowRepositoryImpl
+import com.plcoding.data.repository.likes.LikeRepository
+import com.plcoding.data.repository.likes.LikeRepositoryImpl
 import com.plcoding.data.repository.post.PostRepository
 import com.plcoding.data.repository.post.PostRepositoryImpl
 import com.plcoding.data.repository.user.UserRepository
 import com.plcoding.data.repository.user.UserRepositoryImpl
 import com.plcoding.service.FollowService
+import com.plcoding.service.LikeService
 import com.plcoding.service.PostService
 import com.plcoding.service.UserService
 import com.plcoding.util.Constants
@@ -28,7 +31,11 @@ val mainModule = module {
     single<PostRepository> {
         PostRepositoryImpl(get())
     }
+    single<LikeRepository> {
+        LikeRepositoryImpl(get())
+    }
     single { UserService(get()) }
     single { FollowService(get()) }
     single { PostService(get()) }
+    single { LikeService(get()) }
 }
