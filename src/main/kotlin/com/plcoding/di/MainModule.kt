@@ -2,8 +2,12 @@ package com.plcoding.di
 
 import com.plcoding.data.repository.follow.FollowRepository
 import com.plcoding.data.repository.follow.FollowRepositoryImpl
+import com.plcoding.data.repository.post.PostRepository
+import com.plcoding.data.repository.post.PostRepositoryImpl
 import com.plcoding.data.repository.user.UserRepository
 import com.plcoding.data.repository.user.UserRepositoryImpl
+import com.plcoding.service.FollowService
+import com.plcoding.service.PostService
 import com.plcoding.service.UserService
 import com.plcoding.util.Constants
 import org.koin.dsl.module
@@ -21,5 +25,10 @@ val mainModule = module {
     single<FollowRepository> {
         FollowRepositoryImpl(get())
     }
+    single<PostRepository> {
+        PostRepositoryImpl(get())
+    }
     single { UserService(get()) }
+    single { FollowService(get()) }
+    single { PostService(get()) }
 }

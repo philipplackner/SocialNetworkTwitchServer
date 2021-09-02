@@ -3,6 +3,7 @@ package com.plcoding.service
 import com.plcoding.data.models.User
 import com.plcoding.data.repository.user.UserRepository
 import com.plcoding.data.requests.CreateAccountRequest
+import com.plcoding.data.requests.LoginRequest
 
 class UserService(
     private val repository: UserRepository
@@ -10,6 +11,17 @@ class UserService(
 
     suspend fun doesUserWithEmailExist(email: String): Boolean {
         return repository.getUserByEmail(email) != null
+    }
+
+    suspend fun doesEmailBelongToUserId(email: String, userId: String): Boolean {
+        return repository.doesEmailBelongToUserId(email, userId)
+    }
+
+    suspend fun doesPasswordMatchForUser(request: LoginRequest): Boolean {
+        return repository.doesPasswordForUserMatch(
+            email = request.email,
+            enteredPassword = request.password
+        )
     }
 
     suspend fun createUser(request: CreateAccountRequest) {
