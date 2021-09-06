@@ -29,6 +29,10 @@ class CommentService(
         return ValidationEvent.Success
     }
 
+    suspend fun deleteCommentsForPost(postId: String) {
+        repository.deleteCommentsFromPost(postId)
+    }
+
     suspend fun deleteComment(commentId: String): Boolean {
         return repository.deleteComment(commentId)
     }

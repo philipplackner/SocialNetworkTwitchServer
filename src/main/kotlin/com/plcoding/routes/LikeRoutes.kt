@@ -2,8 +2,9 @@ package com.plcoding.routes
 
 import com.plcoding.data.requests.LikeUpdateRequest
 import com.plcoding.data.responses.BasicApiResponse
+import com.plcoding.data.util.ParentType
+import com.plcoding.service.ActivityService
 import com.plcoding.service.LikeService
-import com.plcoding.service.UserService
 import com.plcoding.util.ApiResponseMessages
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -14,6 +15,7 @@ import io.ktor.routing.*
 
 fun Route.likeParent(
     likeService: LikeService,
+    activityService: ActivityService
 ) {
     authenticate {
         post("/api/like") {
@@ -22,8 +24,14 @@ fun Route.likeParent(
                 return@post
             }
 
-            val likeSuccessful = likeService.likeParent(call.userId, request.parentId)
+            val userId = call.userId
+            val likeSuccessful = likeService.likeParent(userId, request.parentId, request.parentType)
             if(likeSuccessful) {
+                activityService.addLikeActivity(
+                    byUserId = userId,
+                    parentType = ParentType.fromType(request.parentType),
+                    parentId = request.parentId
+                )
                 call.respond(
                     HttpStatusCode.OK,
                     BasicApiResponse(
