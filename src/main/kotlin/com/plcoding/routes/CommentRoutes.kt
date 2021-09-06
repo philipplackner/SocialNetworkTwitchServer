@@ -19,7 +19,6 @@ import io.ktor.routing.*
 
 fun Route.createComment(
     commentService: CommentService,
-    userService: UserService
 ) {
     authenticate {
         post("/api/comment/create") {
@@ -27,37 +26,32 @@ fun Route.createComment(
                 call.respond(HttpStatusCode.BadRequest)
                 return@post
             }
-            ifEmailBelongsToUser(
-                userId = request.userId,
-                validateEmail = userService::doesEmailBelongToUserId
-            ) {
-                when(commentService.createComment(request)) {
-                    is CommentService.ValidationEvent.ErrorFieldEmpty -> {
-                        call.respond(
-                            HttpStatusCode.OK,
-                            BasicApiResponse(
-                                successful = false,
-                                message = ApiResponseMessages.FIELDS_BLANK
-                            )
+            when(commentService.createComment(request, call.userId)) {
+                is CommentService.ValidationEvent.ErrorFieldEmpty -> {
+                    call.respond(
+                        HttpStatusCode.OK,
+                        BasicApiResponse(
+                            successful = false,
+                            message = ApiResponseMessages.FIELDS_BLANK
                         )
-                    }
-                    is CommentService.ValidationEvent.ErrorCommentTooLong -> {
-                        call.respond(
-                            HttpStatusCode.OK,
-                            BasicApiResponse(
-                                successful = false,
-                                message = ApiResponseMessages.COMMENT_TOO_LONG
-                            )
+                    )
+                }
+                is CommentService.ValidationEvent.ErrorCommentTooLong -> {
+                    call.respond(
+                        HttpStatusCode.OK,
+                        BasicApiResponse(
+                            successful = false,
+                            message = ApiResponseMessages.COMMENT_TOO_LONG
                         )
-                    }
-                    is CommentService.ValidationEvent.Success -> {
-                        call.respond(
-                            HttpStatusCode.OK,
-                            BasicApiResponse(
-                                successful = true,
-                            )
+                    )
+                }
+                is CommentService.ValidationEvent.Success -> {
+                    call.respond(
+                        HttpStatusCode.OK,
+                        BasicApiResponse(
+                            successful = true,
                         )
-                    }
+                    )
                 }
             }
         }
@@ -81,7 +75,6 @@ fun Route.getCommentsForPost(
 
 fun Route.deleteComment(
     commentService: CommentService,
-    userService: UserService,
     likeService: LikeService
 ) {
     authenticate {
@@ -90,17 +83,18 @@ fun Route.deleteComment(
                 call.respond(HttpStatusCode.BadRequest)
                 return@delete
             }
-            ifEmailBelongsToUser(
-                userId = request.userId,
-                validateEmail = userService::doesEmailBelongToUserId
-            ) {
-                val deleted = commentService.deleteComment(request.commentId)
-                if(deleted) {
-                    likeService.deleteLikesForParent(request.commentId)
-                    call.respond(HttpStatusCode.OK, BasicApiResponse(successful = true))
-                } else {
-                    call.respond(HttpStatusCode.NotFound, BasicApiResponse(successful = false))
-                }
+
+            val comment = commentService.getCommentById(request.commentId)
+            if(comment?.userId != call.userId) {
+                call.respond(HttpStatusCode.Unauthorized)
+                return@delete
+            }
+            val deleted = commentService.deleteComment(request.commentId)
+            if(deleted) {
+                likeService.deleteLikesForParent(request.commentId)
+                call.respond(HttpStatusCode.OK, BasicApiResponse(successful = true))
+            } else {
+                call.respond(HttpStatusCode.NotFound, BasicApiResponse(successful = false))
             }
         }
     }

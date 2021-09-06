@@ -14,7 +14,6 @@ import io.ktor.routing.*
 
 fun Route.likeParent(
     likeService: LikeService,
-    userService: UserService
 ) {
     authenticate {
         post("/api/like") {
@@ -22,27 +21,23 @@ fun Route.likeParent(
                 call.respond(HttpStatusCode.BadRequest)
                 return@post
             }
-            ifEmailBelongsToUser(
-                userId = request.userId,
-                validateEmail = userService::doesEmailBelongToUserId
-            ) {
-                val likeSuccessful = likeService.likeParent(request.userId, request.parentId)
-                if(likeSuccessful) {
-                    call.respond(
-                        HttpStatusCode.OK,
-                        BasicApiResponse(
-                            successful = true
-                        )
+
+            val likeSuccessful = likeService.likeParent(call.userId, request.parentId)
+            if(likeSuccessful) {
+                call.respond(
+                    HttpStatusCode.OK,
+                    BasicApiResponse(
+                        successful = true
                     )
-                } else {
-                    call.respond(
-                        HttpStatusCode.OK,
-                        BasicApiResponse(
-                            successful = false,
-                            message = ApiResponseMessages.USER_NOT_FOUND
-                        )
+                )
+            } else {
+                call.respond(
+                    HttpStatusCode.OK,
+                    BasicApiResponse(
+                        successful = false,
+                        message = ApiResponseMessages.USER_NOT_FOUND
                     )
-                }
+                )
             }
         }
     }
@@ -50,7 +45,6 @@ fun Route.likeParent(
 
 fun Route.unlikeParent(
     likeService: LikeService,
-    userService: UserService
 ) {
     authenticate {
         delete("/api/unlike") {
@@ -58,27 +52,22 @@ fun Route.unlikeParent(
                 call.respond(HttpStatusCode.BadRequest)
                 return@delete
             }
-            ifEmailBelongsToUser(
-                userId = request.userId,
-                validateEmail = userService::doesEmailBelongToUserId
-            ) {
-                val unlikeSuccessful = likeService.unlikeParent(request.userId, request.parentId)
-                if(unlikeSuccessful) {
-                    call.respond(
-                        HttpStatusCode.OK,
-                        BasicApiResponse(
-                            successful = true
-                        )
+            val unlikeSuccessful = likeService.unlikeParent(call.userId, request.parentId)
+            if(unlikeSuccessful) {
+                call.respond(
+                    HttpStatusCode.OK,
+                    BasicApiResponse(
+                        successful = true
                     )
-                } else {
-                    call.respond(
-                        HttpStatusCode.OK,
-                        BasicApiResponse(
-                            successful = false,
-                            message = ApiResponseMessages.USER_NOT_FOUND
-                        )
+                )
+            } else {
+                call.respond(
+                    HttpStatusCode.OK,
+                    BasicApiResponse(
+                        successful = false,
+                        message = ApiResponseMessages.USER_NOT_FOUND
                     )
-                }
+                )
             }
         }
     }
