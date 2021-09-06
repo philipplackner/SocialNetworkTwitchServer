@@ -2,6 +2,7 @@ package com.plcoding.routes
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.plcoding.data.models.User
 import com.plcoding.data.repository.user.UserRepository
 import com.plcoding.data.requests.CreateAccountRequest
 import com.plcoding.data.requests.LoginRequest
@@ -11,7 +12,9 @@ import com.plcoding.service.UserService
 import com.plcoding.util.ApiResponseMessages.FIELDS_BLANK
 import com.plcoding.util.ApiResponseMessages.INVALID_CREDENTIALS
 import com.plcoding.util.ApiResponseMessages.USER_ALREADY_EXISTS
+import com.plcoding.util.QueryParams
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -103,6 +106,26 @@ fun Route.loginUser(
                     successful = false,
                     message = INVALID_CREDENTIALS
                 )
+            )
+        }
+    }
+}
+
+fun Route.searchUser(userService: UserService) {
+    authenticate {
+        get("/api/user/search") {
+            val query = call.parameters[QueryParams.PARAM_QUERY]
+            if(query == null || query.isBlank()) {
+                call.respond(
+                    HttpStatusCode.OK,
+                    listOf<User>()
+                )
+                return@get
+            }
+            val searchResults = userService.searchForUsers(query, call.userId)
+            call.respond(
+                HttpStatusCode.OK,
+                searchResults
             )
         }
     }
