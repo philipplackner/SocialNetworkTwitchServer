@@ -2,9 +2,11 @@ package com.plcoding.plugins
 
 import com.plcoding.routes.*
 import com.plcoding.service.*
-import io.ktor.routing.*
 import io.ktor.application.*
+import io.ktor.http.content.*
+import io.ktor.routing.*
 import org.koin.ktor.ext.inject
+import java.io.File
 
 fun Application.configureRouting() {
     val userService: UserService by inject()
@@ -27,6 +29,9 @@ fun Application.configureRouting() {
             jwtSecret = jwtSecret
         )
         searchUser(userService)
+        getUserProfile(userService)
+        getPostsForProfile(postService)
+        updateUserProfile(userService)
 
         // Following routes
         followUser(followService, activityService)
@@ -48,5 +53,9 @@ fun Application.configureRouting() {
 
         // Activity routes
         getActivities(activityService)
+
+        static {
+            resources("static")
+        }
     }
 }

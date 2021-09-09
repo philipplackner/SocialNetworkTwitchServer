@@ -1,5 +1,6 @@
 package com.plcoding.di
 
+import com.google.gson.Gson
 import com.plcoding.data.repository.activity.ActivityRepository
 import com.plcoding.data.repository.activity.ActivityRepositoryImpl
 import com.plcoding.data.repository.comment.CommentRepository
@@ -47,4 +48,6 @@ val mainModule = module {
     single { LikeService(get()) }
     single { CommentService(get()) }
     single { ActivityService(get(), get(), get()) }
+
+    single { Gson() }
 }
