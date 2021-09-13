@@ -1,6 +1,7 @@
 package com.plcoding.data.repository.likes
 
 import com.plcoding.data.models.Like
+import com.plcoding.data.models.Post
 import com.plcoding.data.models.User
 import org.litote.kmongo.and
 import org.litote.kmongo.coroutine.CoroutineDatabase
@@ -16,7 +17,7 @@ class LikeRepositoryImpl(
     override suspend fun likeParent(userId: String, parentId: String, parentType: Int): Boolean {
         val doesUserExist = users.findOneById(userId) != null
         return if(doesUserExist) {
-            likes.insertOne(Like(userId, parentId, parentType))
+            likes.insertOne(Like(userId, parentId, parentType, System.currentTimeMillis()))
             true
         } else {
             false
@@ -40,5 +41,14 @@ class LikeRepositoryImpl(
 
     override suspend fun deleteLikesForParent(parentId: String) {
         likes.deleteMany(Like::parentId eq parentId)
+    }
+
+    override suspend fun getLikesForParent(parentId: String, page: Int, pageSize: Int): List<Like> {
+        return likes
+            .find(Like::parentId eq parentId)
+            .skip(page * pageSize)
+            .limit(pageSize)
+            .descendingSort(Like::timestamp)
+            .toList()
     }
 }

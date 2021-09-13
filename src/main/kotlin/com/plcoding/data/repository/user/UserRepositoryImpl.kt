@@ -71,4 +71,8 @@ class UserRepositoryImpl(
             .descendingSort(User::followerCount)
             .toList()
     }
+
+    override suspend fun getUsers(userIds: List<String>): List<User> {
+        return users.find(User::id `in` userIds).toList()
+    }
 }
