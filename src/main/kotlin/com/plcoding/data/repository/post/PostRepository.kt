@@ -5,7 +5,7 @@ import com.plcoding.util.Constants
 
 interface PostRepository {
 
-    suspend fun createPostIfUserExists(post: Post): Boolean
+    suspend fun createPost(post: Post): Boolean
 
     suspend fun deletePost(postId: String)
 

@@ -19,6 +19,7 @@ import com.plcoding.util.Constants
 import com.plcoding.util.Constants.BASE_URL
 import com.plcoding.util.Constants.PROFILE_PICTURE_PATH
 import com.plcoding.util.QueryParams
+import com.plcoding.util.save
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.http.*
@@ -206,10 +207,7 @@ fun Route.updateUserProfile(userService: UserService) {
                         }
                     }
                     is PartData.FileItem -> {
-                        val fileBytes = partData.streamProvider().readBytes()
-                        val fileExtension = partData.originalFileName?.takeLastWhile { it != '.' }
-                        fileName = UUID.randomUUID().toString() + "." + fileExtension
-                        File("$PROFILE_PICTURE_PATH$fileName").writeBytes(fileBytes)
+                        fileName = partData.save(PROFILE_PICTURE_PATH)
                     }
                     is PartData.BinaryItem -> Unit
                 }
