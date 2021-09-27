@@ -11,5 +11,6 @@ object Constants {
 
     const val BASE_URL = "http://localhost:8001/"
     const val PROFILE_PICTURE_PATH = "build/resources/main/static/profile_pictures/"
+    const val BANNER_IMAGE_PATH = "build/resources/main/static/banner_images/"
     const val POST_PICTURE_PATH = "build/resources/main/static/post_pictures/"
 }

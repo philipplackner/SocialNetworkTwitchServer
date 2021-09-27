@@ -30,6 +30,7 @@ class LikeService(
         return users.map { user ->
             val isFollowing = followsByUser.find { it.followedUserId == user.id } != null
             UserResponseItem(
+                userId = user.id,
                 username = user.username,
                 profilePictureUrl = user.profileImageUrl,
                 bio = user.bio,
