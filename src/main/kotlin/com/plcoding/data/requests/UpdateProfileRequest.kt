@@ -1,6 +1,6 @@
 package com.plcoding.data.requests
 
-import com.plcoding.data.models.Skill
+import com.plcoding.data.responses.SkillDto
 
 data class UpdateProfileRequest(
     val username: String,
@@ -8,5 +8,5 @@ data class UpdateProfileRequest(
     val gitHubUrl: String,
     val instagramUrl: String,
     val linkedInUrl: String,
-    val skills: List<Skill>,
+    val skills: List<SkillDto>,
 )
