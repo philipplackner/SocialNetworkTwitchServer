@@ -1,6 +1,7 @@
 package com.plcoding.di
 
 import com.google.gson.Gson
+import com.plcoding.data.models.Post
 import com.plcoding.data.models.Skill
 import com.plcoding.data.repository.activity.ActivityRepository
 import com.plcoding.data.repository.activity.ActivityRepositoryImpl
