@@ -22,8 +22,10 @@ import com.plcoding.util.Constants
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.dsl.module
+import org.litote.kmongo.EMPTY_BSON
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
+import org.litote.kmongo.setValue
 
 val mainModule = module {
     single {

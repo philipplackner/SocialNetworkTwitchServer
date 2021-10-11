@@ -4,6 +4,7 @@ import com.plcoding.data.models.Activity
 import com.plcoding.data.repository.activity.ActivityRepository
 import com.plcoding.data.repository.comment.CommentRepository
 import com.plcoding.data.repository.post.PostRepository
+import com.plcoding.data.responses.ActivityResponse
 import com.plcoding.data.util.ActivityType
 import com.plcoding.data.util.ParentType
 import com.plcoding.util.Constants
@@ -18,7 +19,7 @@ class ActivityService(
         userId: String,
         page: Int = 0,
         pageSize: Int = Constants.DEFAULT_ACTIVITY_PAGE_SIZE
-    ): List<Activity> {
+    ): List<ActivityResponse> {
         return activityRepository.getActivitiesForUser(userId, page, pageSize)
     }
 
