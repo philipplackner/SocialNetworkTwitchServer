@@ -1,6 +1,7 @@
 package com.plcoding.data.repository.comment
 
 import com.plcoding.data.models.Comment
+import com.plcoding.data.responses.CommentResponse
 
 interface CommentRepository {
 
@@ -10,7 +11,7 @@ interface CommentRepository {
 
     suspend fun deleteCommentsFromPost(postId: String): Boolean
 
-    suspend fun getCommentsForPost(postId: String): List<Comment>
+    suspend fun getCommentsForPost(postId: String, ownUserId: String): List<CommentResponse>
 
     suspend fun getComment(commentId: String): Comment?
 }

@@ -60,6 +60,15 @@ fun Route.createComment(
                         )
                     )
                 }
+                is CommentService.ValidationEvent.UserNotFound -> {
+                    call.respond(
+                        HttpStatusCode.OK,
+                        BasicApiResponse<Unit>(
+                            successful = false,
+                            message = "User not found"
+                        )
+                    )
+                }
             }
         }
     }
@@ -74,7 +83,7 @@ fun Route.getCommentsForPost(
                 call.respond(HttpStatusCode.BadRequest)
                 return@get
             }
-            val comments = commentService.getCommentsForPost(postId)
+            val comments = commentService.getCommentsForPost(postId, call.userId)
             call.respond(HttpStatusCode.OK, comments)
         }
     }
