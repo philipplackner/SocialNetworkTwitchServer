@@ -1,6 +1,7 @@
 package com.plcoding.data.repository.post
 
 import com.plcoding.data.models.Post
+import com.plcoding.data.responses.PostResponse
 import com.plcoding.util.Constants
 
 interface PostRepository {
@@ -22,4 +23,6 @@ interface PostRepository {
     ): List<Post>
 
     suspend fun getPost(postId: String): Post?
+
+    suspend fun getPostDetails(userId: String, postId: String): PostResponse?
 }

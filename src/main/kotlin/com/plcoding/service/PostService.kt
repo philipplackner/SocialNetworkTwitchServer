@@ -3,6 +3,7 @@ package com.plcoding.service
 import com.plcoding.data.models.Post
 import com.plcoding.data.repository.post.PostRepository
 import com.plcoding.data.requests.CreatePostRequest
+import com.plcoding.data.responses.PostResponse
 import com.plcoding.util.Constants
 
 class PostService(
@@ -36,7 +37,15 @@ class PostService(
         return repository.getPostsForProfile(userId, page, pageSize)
     }
 
-    suspend fun getPost(postId: String): Post? = repository.getPost(postId)
+    suspend fun getPost(
+        postId: String
+    ): Post? {
+        return repository.getPost(postId)
+    }
+
+    suspend fun getPostDetails(ownUserId: String, postId: String): PostResponse? {
+        return repository.getPostDetails(ownUserId, postId)
+    }
 
     suspend fun deletePost(postId: String) {
         repository.deletePost(postId)
