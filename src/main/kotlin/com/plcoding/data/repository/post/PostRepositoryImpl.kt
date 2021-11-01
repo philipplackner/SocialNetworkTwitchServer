@@ -45,7 +45,7 @@ class PostRepositoryImpl(
             .toList()
     }
 
-    override suspend fun getPostsForProfile(userId: String, page: Int, pageSize: Int): List<PostResponse> {
+    override suspend fun getPostsForProfile(ownUserId: String, userId: String, page: Int, pageSize: Int): List<PostResponse> {
         val user = users.findOneById(userId) ?: return emptyList()
         return posts.find(Post::userId eq userId)
             .skip(page * pageSize)
@@ -55,7 +55,7 @@ class PostRepositoryImpl(
             .map { post ->
                 val isLiked = likes.findOne(and(
                     Like::parentId eq post.id,
-                    Like::userId eq userId
+                    Like::userId eq ownUserId
                 )) != null
                 PostResponse(
                     id = post.id,
