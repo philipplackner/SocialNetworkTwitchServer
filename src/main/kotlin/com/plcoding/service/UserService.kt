@@ -7,6 +7,7 @@ import com.plcoding.data.requests.CreateAccountRequest
 import com.plcoding.data.requests.UpdateProfileRequest
 import com.plcoding.data.responses.ProfileResponse
 import com.plcoding.data.responses.UserResponseItem
+import com.plcoding.util.Constants
 
 class UserService(
     private val userRepository: UserRepository,
@@ -79,8 +80,8 @@ class UserService(
                 email = request.email,
                 username = request.username,
                 password = request.password,
-                profileImageUrl = "",
-                bannerUrl = "",
+                profileImageUrl = Constants.DEFAULT_PROFILE_PICTURE_PATH,
+                bannerUrl = Constants.DEFAULT_BANNER_IMAGE_PATH,
                 bio = "",
                 gitHubUrl = null,
                 instagramUrl = null,
