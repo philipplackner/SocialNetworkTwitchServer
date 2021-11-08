@@ -29,7 +29,7 @@ fun Route.createComment(
                 return@post
             }
             val userId = call.userId
-            when(commentService.createComment(request, userId)) {
+            when (commentService.createComment(request, userId)) {
                 is CommentService.ValidationEvent.ErrorFieldEmpty -> {
                     call.respond(
                         HttpStatusCode.OK,
@@ -77,15 +77,13 @@ fun Route.createComment(
 fun Route.getCommentsForPost(
     commentService: CommentService,
 ) {
-    authenticate {
-        get("/api/comment/get") {
-            val postId = call.parameters[QueryParams.PARAM_POST_ID] ?: kotlin.run {
-                call.respond(HttpStatusCode.BadRequest)
-                return@get
-            }
-            val comments = commentService.getCommentsForPost(postId, call.userId)
-            call.respond(HttpStatusCode.OK, comments)
+    get("/api/comment/get") {
+        val postId = call.parameters[QueryParams.PARAM_POST_ID] ?: kotlin.run {
+            call.respond(HttpStatusCode.BadRequest)
+            return@get
         }
+        val comments = commentService.getCommentsForPost(postId, call.userId)
+        call.respond(HttpStatusCode.OK, comments)
     }
 }
 
@@ -101,12 +99,12 @@ fun Route.deleteComment(
             }
 
             val comment = commentService.getCommentById(request.commentId)
-            if(comment?.userId != call.userId) {
+            if (comment?.userId != call.userId) {
                 call.respond(HttpStatusCode.Unauthorized)
                 return@delete
             }
             val deleted = commentService.deleteComment(request.commentId)
-            if(deleted) {
+            if (deleted) {
                 likeService.deleteLikesForParent(request.commentId)
                 call.respond(HttpStatusCode.OK, BasicApiResponse<Unit>(successful = true))
             } else {
