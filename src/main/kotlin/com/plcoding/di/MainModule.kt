@@ -5,6 +5,8 @@ import com.plcoding.data.models.Post
 import com.plcoding.data.models.Skill
 import com.plcoding.data.repository.activity.ActivityRepository
 import com.plcoding.data.repository.activity.ActivityRepositoryImpl
+import com.plcoding.data.repository.chat.ChatRepository
+import com.plcoding.data.repository.chat.ChatRepositoryImpl
 import com.plcoding.data.repository.comment.CommentRepository
 import com.plcoding.data.repository.comment.CommentRepositoryImpl
 import com.plcoding.data.repository.follow.FollowRepository
@@ -53,6 +55,9 @@ val mainModule = module {
     single<SkillRepository> {
         SkillRepositoryImpl(get())
     }
+    single<ChatRepository> {
+        ChatRepositoryImpl(get())
+    }
     single { UserService(get(), get()) }
     single { FollowService(get()) }
     single { PostService(get()) }
@@ -60,6 +65,7 @@ val mainModule = module {
     single { CommentService(get(), get()) }
     single { ActivityService(get(), get(), get()) }
     single { SkillService(get()) }
+    single { ChatService(get()) }
 
     single { Gson() }
 }
