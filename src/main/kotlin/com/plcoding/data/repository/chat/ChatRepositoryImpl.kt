@@ -25,13 +25,7 @@ class ChatRepositoryImpl(
     }
 
     override suspend fun getChatsForUser(ownUserId: String): List<Chat> {
-        val user = users.findOneById(ownUserId) ?: return emptyList()
-        val simpleUser = SimpleUser(
-            id = user.id,
-            profilePictureUrl = user.profileImageUrl,
-            username = user.username
-        )
-        return chats.find(Chat::users contains simpleUser)
+        return chats.find("{'users.id': $ownUserId}")
             .descendingSort(Chat::timestamp)
             .toList()
     }
