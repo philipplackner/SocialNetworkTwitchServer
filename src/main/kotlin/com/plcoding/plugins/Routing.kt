@@ -2,11 +2,14 @@ package com.plcoding.plugins
 
 import com.plcoding.routes.*
 import com.plcoding.service.*
+import com.plcoding.service.chat.ChatService
+import com.plcoding.service.chat.ChatSession
 import io.ktor.application.*
 import io.ktor.http.content.*
 import io.ktor.routing.*
+import io.ktor.sessions.*
+import io.ktor.util.pipeline.*
 import org.koin.ktor.ext.inject
-import java.io.File
 
 fun Application.configureRouting() {
     val userService: UserService by inject()

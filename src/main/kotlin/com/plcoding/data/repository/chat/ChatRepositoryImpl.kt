@@ -39,4 +39,8 @@ class ChatRepositoryImpl(
     override suspend fun doesChatBelongToUser(chatId: String, userId: String): Boolean {
         return chats.findOneById(chatId)?.users?.any { it.id == userId } == true
     }
+
+    override suspend fun insertMessage(message: Message) {
+        messages.insertOne(message)
+    }
 }

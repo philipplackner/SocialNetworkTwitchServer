@@ -10,4 +10,6 @@ interface ChatRepository {
     suspend fun getChatsForUser(ownUserId: String): List<Chat>
 
     suspend fun doesChatBelongToUser(chatId: String, userId: String): Boolean
+
+    suspend fun insertMessage(message: Message)
 }

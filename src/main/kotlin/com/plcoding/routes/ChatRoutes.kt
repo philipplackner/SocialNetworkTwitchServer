@@ -1,6 +1,8 @@
 package com.plcoding.routes
 
-import com.plcoding.service.ChatService
+import com.plcoding.service.chat.ChatController
+import com.plcoding.service.chat.ChatService
+import com.plcoding.service.chat.ChatSession
 import com.plcoding.util.Constants
 import com.plcoding.util.QueryParams
 import io.ktor.application.*
@@ -9,6 +11,7 @@ import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import io.ktor.sessions.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
 
@@ -42,16 +45,26 @@ fun Route.getChatsForUser(chatService: ChatService) {
     }
 }
 
-fun Route.chatWebSocket(chatService: ChatService) {
+fun Route.chatWebSocket(chatController: ChatController) {
     webSocket("/api/chat/websocket") {
-        incoming.consumeEach { frame ->
-            when (frame) {
-                is Frame.Text -> {
-                    if (frame.readText() == "Hello World") {
-                        send(Frame.Text("Yo, what's up"))
+        val session = call.sessions.get("SESSION") as? ChatSession
+        if(session == null) {
+            close(CloseReason(CloseReason.Codes.VIOLATED_POLICY, "No session"))
+            return@webSocket
+        }
+        try {
+            incoming.consumeEach { frame ->
+                when (frame) {
+                    is Frame.Text -> {
+
                     }
                 }
             }
+        } catch (e: Exception) {
+
+        } finally {
+            chatController.onDisconnect(session.userId)
         }
+
     }
 }

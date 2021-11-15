@@ -1,4 +1,4 @@
-package com.plcoding.service
+package com.plcoding.service.chat
 
 import com.plcoding.data.models.Chat
 import com.plcoding.data.models.Message
