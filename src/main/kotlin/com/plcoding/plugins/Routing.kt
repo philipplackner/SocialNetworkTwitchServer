@@ -2,6 +2,7 @@ package com.plcoding.plugins
 
 import com.plcoding.routes.*
 import com.plcoding.service.*
+import com.plcoding.service.chat.ChatController
 import com.plcoding.service.chat.ChatService
 import com.plcoding.service.chat.ChatSession
 import io.ktor.application.*
@@ -20,6 +21,7 @@ fun Application.configureRouting() {
     val activityService: ActivityService by inject()
     val skillService: SkillService by inject()
     val chatService: ChatService by inject()
+    val chatController: ChatController by inject()
 
     val jwtIssuer = environment.config.property("jwt.domain").getString()
     val jwtAudience = environment.config.property("jwt.audience").getString()
@@ -68,7 +70,7 @@ fun Application.configureRouting() {
         // Chat routes
         getChatsForUser(chatService)
         getMessagesForChat(chatService)
-        chatWebSocket(chatService)
+        chatWebSocket(chatController)
 
         static {
             resources("static")

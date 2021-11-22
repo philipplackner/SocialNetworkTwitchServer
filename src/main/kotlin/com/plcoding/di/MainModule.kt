@@ -1,6 +1,9 @@
 package com.plcoding.di
 
 import com.google.gson.Gson
+import com.plcoding.data.models.Chat
+import com.plcoding.data.models.Message
+import com.plcoding.data.models.SimpleUser
 import com.plcoding.data.repository.activity.ActivityRepository
 import com.plcoding.data.repository.activity.ActivityRepositoryImpl
 import com.plcoding.data.repository.chat.ChatRepository
@@ -21,6 +24,8 @@ import com.plcoding.service.*
 import com.plcoding.service.chat.ChatController
 import com.plcoding.service.chat.ChatService
 import com.plcoding.util.Constants
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.dsl.module
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
