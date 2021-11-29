@@ -1,10 +1,8 @@
 package com.plcoding.data.websocket
 
 import com.plcoding.data.models.Message
-import org.bson.codecs.pojo.annotations.BsonId
-import org.bson.types.ObjectId
 
-data class WsMessage(
+data class WsServerMessage(
     val fromId: String,
     val toId: String,
     val text: String,

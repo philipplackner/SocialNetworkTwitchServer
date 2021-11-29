@@ -1,12 +1,8 @@
 package com.plcoding.service.chat
 
-import com.plcoding.data.models.Chat
-import com.plcoding.data.models.Message
-import com.plcoding.data.models.SimpleUser
 import com.plcoding.data.repository.chat.ChatRepository
-import com.plcoding.data.websocket.WsMessage
+import com.plcoding.data.websocket.WsServerMessage
 import io.ktor.http.cio.websocket.*
-import org.litote.kmongo.util.idValue
 import java.util.concurrent.ConcurrentHashMap
 
 class ChatController(
@@ -25,9 +21,9 @@ class ChatController(
         }
     }
 
-    suspend fun sendMessage(json: String, message: WsMessage) {
-        onlineUsers[message.fromId]?.send(Frame.Text(json))
-        onlineUsers[message.toId]?.send(Frame.Text(json))
+    suspend fun sendMessage(frameText: String, message: WsServerMessage) {
+        onlineUsers[message.fromId]?.send(Frame.Text(frameText))
+        onlineUsers[message.toId]?.send(Frame.Text(frameText))
         val messageEntity = message.toMessage()
         repository.insertMessage(messageEntity)
         if(!repository.doesChatByUsersExist(message.fromId, message.toId)) {

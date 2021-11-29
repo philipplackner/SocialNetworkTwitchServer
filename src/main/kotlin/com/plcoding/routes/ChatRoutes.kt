@@ -1,8 +1,7 @@
 package com.plcoding.routes
 
 import com.google.gson.Gson
-import com.plcoding.data.models.Message
-import com.plcoding.data.websocket.WsMessage
+import com.plcoding.data.websocket.WsServerMessage
 import com.plcoding.service.chat.ChatController
 import com.plcoding.service.chat.ChatService
 import com.plcoding.service.chat.ChatSession
@@ -76,7 +75,7 @@ fun Route.chatWebSocket(chatController: ChatController) {
                                 return@run
                             }
                             val json = frameText.substring(delimiterIndex + 1, frameText.length)
-                            handleWebSocket(this, session, chatController, type, json)
+                            handleWebSocket(this, session, chatController, type, frameText, json)
                         }
                         else -> Unit
                     }
@@ -96,13 +95,14 @@ suspend fun handleWebSocket(
     session: ChatSession,
     chatController: ChatController,
     type: Int,
+    frameText: String,
     json: String
 ) {
     val gson by inject<Gson>(Gson::class.java)
     when(type) {
         WebSocketObject.MESSAGE.ordinal -> {
-            val message = gson.fromJsonOrNull(json, WsMessage::class.java) ?: return
-            chatController.sendMessage(json, message)
+            val message = gson.fromJsonOrNull(json, WsServerMessage::class.java) ?: return
+            chatController.sendMessage(frameText, message)
         }
     }
 }

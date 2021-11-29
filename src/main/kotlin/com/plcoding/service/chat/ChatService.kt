@@ -3,6 +3,7 @@ package com.plcoding.service.chat
 import com.plcoding.data.models.Chat
 import com.plcoding.data.models.Message
 import com.plcoding.data.repository.chat.ChatRepository
+import com.plcoding.data.responses.ChatDto
 
 class ChatService(
     private val chatRepository: ChatRepository
@@ -16,7 +17,7 @@ class ChatService(
         return chatRepository.getMessagesForChat(chatId, page, pageSize)
     }
 
-    suspend fun getChatsForUser(ownUserId: String): List<Chat> {
+    suspend fun getChatsForUser(ownUserId: String): List<ChatDto> {
         return chatRepository.getChatsForUser(ownUserId)
     }
 }
