@@ -19,7 +19,7 @@ class ChatRepositoryImpl(
         return messages.find(Message::chatId eq chatId)
             .skip(page * pageSize)
             .limit(pageSize)
-            .descendingSort(Message::timestamp)
+            .ascendingSort(Message::timestamp)
             .toList()
     }
 
