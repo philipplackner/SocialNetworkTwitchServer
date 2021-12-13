@@ -14,7 +14,7 @@ interface ChatRepository {
 
     suspend fun insertMessage(message: Message)
 
-    suspend fun insertChat(userId1: String, userId2: String, messageId: String)
+    suspend fun insertChat(userId1: String, userId2: String, messageId: String): String
 
     suspend fun doesChatByUsersExist(userId1: String, userId2: String): Boolean
 

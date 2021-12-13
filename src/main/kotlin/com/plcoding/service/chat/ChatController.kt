@@ -36,10 +36,11 @@ class ChatController(
         val frameText = gson.toJson(wsServerMessage)
         onlineUsers[ownUserId]?.send(Frame.Text("${WebSocketObject.MESSAGE.ordinal}#$frameText"))
         onlineUsers[message.toId]?.send(Frame.Text("${WebSocketObject.MESSAGE.ordinal}#$frameText"))
-        repository.insertMessage(messageEntity)
         if(!repository.doesChatByUsersExist(ownUserId, message.toId)) {
-            repository.insertChat(ownUserId, message.toId, messageEntity.id)
+            val chatId = repository.insertChat(ownUserId, message.toId, messageEntity.id)
+            repository.insertMessage(messageEntity.copy(chatId = chatId))
         } else {
+            repository.insertMessage(messageEntity)
             message.chatId?.let {
                 repository.updateLastMessageIdForChat(message.chatId, messageEntity.id)
             }

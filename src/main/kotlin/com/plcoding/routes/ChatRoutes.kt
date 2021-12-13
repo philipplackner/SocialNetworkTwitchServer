@@ -100,6 +100,7 @@ suspend fun handleWebSocket(
     when(type) {
         WebSocketObject.MESSAGE.ordinal -> {
             val message = gson.fromJsonOrNull(json, WsClientMessage::class.java) ?: return
+            println("Received message $message from $ownUserId")
             chatController.sendMessage(ownUserId, gson, message)
         }
     }
