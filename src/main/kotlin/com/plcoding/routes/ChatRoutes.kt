@@ -55,6 +55,7 @@ fun Route.getChatsForUser(chatService: ChatService) {
 fun Route.chatWebSocket(chatController: ChatController) {
     authenticate {
         webSocket("/api/chat/websocket") {
+            println("Connecting via web socket")
             chatController.onJoin(call.userId, this)
             try {
                 incoming.consumeEach { frame ->
