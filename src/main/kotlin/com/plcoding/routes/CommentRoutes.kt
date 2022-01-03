@@ -1,14 +1,11 @@
 package com.plcoding.routes
 
 import com.plcoding.data.requests.CreateCommentRequest
-import com.plcoding.data.requests.CreatePostRequest
 import com.plcoding.data.requests.DeleteCommentRequest
-import com.plcoding.data.requests.DeletePostRequest
 import com.plcoding.data.responses.BasicApiResponse
 import com.plcoding.service.ActivityService
 import com.plcoding.service.CommentService
 import com.plcoding.service.LikeService
-import com.plcoding.service.UserService
 import com.plcoding.util.ApiResponseMessages
 import com.plcoding.util.QueryParams
 import io.ktor.application.*
